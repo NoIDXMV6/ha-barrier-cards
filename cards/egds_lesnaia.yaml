@@ -1,19 +1,17 @@
-# Карточка «Живое видео + кнопка открытия» — шлагбаум ЕГДС
-# «Ул. Лесная · Шлагбаум №1» (Камера №1)
+# Карточка «Живое видео + кнопки Открыть / Обучить» — шлагбаум ЕГДС (ул. Лесная)
+# v1.1.0
 #
 # Вставка: Панель → Изменить → Добавить карточку → Вручную → вставить → Сохранить.
-# Дополнительные компоненты не требуются.
 #
-# camera — подтверждён по вашим данным; button/cover сверьте:
-# Инструменты разработчика → Состояния → фильтр «otkryt».
-# Камера ЕГДС собирает «живую» картинку из снимков (~1 кадр/с).
+# Новое в v1.1.0: кнопка «Обучить» (camera-plus) — снимает кадр с камеры и
+# добавляет его в базу «своих» машин аддона Smart Access Core.
 
 type: picture-elements
 camera_view: live
 camera_image: camera.ul_lesnaia_shlagbaum_no1_ul_lesnaia_kamera_no1
-title: Шлагбаум — Ул. Лесная №1
+title: Шлагбаум — ул. Лесная
 elements:
-  # Кнопка «Открыть шлагбаум» (поверх видео, справа внизу)
+  # Кнопка «Открыть шлагбаум»
   - type: state-icon
     entity: button.ul_lesnaia_shlagbaum_no1_otkryt
     icon: mdi:boom-gate-arrow-up-outline
@@ -33,7 +31,28 @@ elements:
       confirmation:
         text: Открыть шлагбаум?
 
-  # Кнопка «во весь экран» — диалог с живым видео (слева внизу)
+  # Кнопка «Обучить» — кадр в базу «своих» машин
+  - type: icon
+    icon: mdi:camera-plus
+    style:
+      top: 84%
+      left: 70%
+      color: white
+      background: rgba(0, 0, 0, 0.45)
+      border-radius: 50%
+      padding: 10px
+      transform: translate(-50%, -50%)
+    tap_action:
+      action: perform-action
+      perform_action: smart_access.enroll
+      data:
+        entity_id: camera.ul_lesnaia_shlagbaum_no1_ul_lesnaia_kamera_no1
+        subject: Моя машина
+        kind: car
+      confirmation:
+        text: Добавить текущий кадр в базу «Моя машина»?
+
+  # Кнопка «во весь экран»
   - type: icon
     icon: mdi:arrow-expand-all
     style:
@@ -48,7 +67,7 @@ elements:
       action: more-info
       entity: camera.ul_lesnaia_shlagbaum_no1_ul_lesnaia_kamera_no1
 
-  # Подпись: состояние шлагбаума (Закрыто / Открывается / Открыто)
+  # Подпись: состояние шлагбаума
   - type: state-label
     entity: cover.ul_lesnaia_shlagbaum_no1_shlagbaum
     style:
