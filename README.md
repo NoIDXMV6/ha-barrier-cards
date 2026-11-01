@@ -1,5 +1,10 @@
 # Карточки шлагбаумов для Home Assistant (А.М.Видео + ЕГДС)
 
+> ⭐ **Эволюция проекта:** автоматическое открытие шлагбаума по
+> распознаванию вашей машины (без номеров) и калитки по лицам —
+> в репозитории **[ha-smart-access](https://github.com/NoIDXMV6/ha-smart-access)**.
+> Там же — обновлённые карточки с кнопкой **«Обучить»**.
+
 Готовые карточки Lovelace для панелей Home Assistant к интеграциям
 [amvideo-ha](https://github.com/NoIDXMV6/amvideo-ha) (А.М.Видео)
 и [egds-ha](https://github.com/NoIDXMV6/egds-ha) (ЕГДС):
