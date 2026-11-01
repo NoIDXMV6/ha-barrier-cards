@@ -1,0 +1,59 @@
+# Карточка «Живое видео + кнопка открытия» — шлагбаум А.М.Видео
+# «1 шлагбаум (деревня Говорово)(15072)»
+#
+# Вставка: Панель → Изменить → Добавить карточку → Вручную → вставить → Сохранить.
+# Дополнительные компоненты не требуются.
+#
+# camera — подтверждён по вашим данным; button/cover сверьте:
+# Инструменты разработчика → Состояния → фильтр «otkryt».
+
+type: picture-elements
+camera_view: live
+camera_image: camera.1_shlagbaum_derevnia_govorovo_15072_kamera
+title: Шлагбаум — деревня Говорово
+elements:
+  # Кнопка «Открыть шлагбаум» (поверх видео, справа внизу)
+  - type: state-icon
+    entity: button.1_shlagbaum_derevnia_govorovo_15072_otkryt
+    icon: mdi:boom-gate-arrow-up-outline
+    style:
+      top: 84%
+      left: 86%
+      color: white
+      background: rgba(0, 0, 0, 0.45)
+      border-radius: 50%
+      padding: 12px
+      transform: translate(-50%, -50%)
+    tap_action:
+      action: perform-action
+      perform_action: amvideo.open_barrier
+      target:
+        entity_id: button.1_shlagbaum_derevnia_govorovo_15072_otkryt
+      confirmation:
+        text: Открыть шлагбаум?
+
+  # Кнопка «во весь экран» — диалог с живым видео (слева внизу)
+  - type: icon
+    icon: mdi:arrow-expand-all
+    style:
+      top: 84%
+      left: 14%
+      color: white
+      background: rgba(0, 0, 0, 0.45)
+      border-radius: 50%
+      padding: 10px
+      transform: translate(-50%, -50%)
+    tap_action:
+      action: more-info
+      entity: camera.1_shlagbaum_derevnia_govorovo_15072_kamera
+
+  # Подпись: состояние шлагбаума (Закрыто / Открывается / Открыто)
+  - type: state-label
+    entity: cover.1_shlagbaum_derevnia_govorovo_15072_shlagbaum
+    style:
+      top: 93%
+      left: 50%
+      color: white
+      text-shadow: 0 0 4px black
+      font-size: 95%
+      transform: translate(-50%, -50%)

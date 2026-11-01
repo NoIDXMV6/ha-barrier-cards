@@ -1,0 +1,86 @@
+# Автоматизация «Нажал “Открыть” — открылось живое видео»
+#
+# При нажатии кнопки открытия шлагбаума (в любой карточке) автоматически
+# открывает всплывающее окно с живой камерой — контроль проезда.
+# Окно закрывается само через 90 секунд.
+#
+# ТРЕБОВАНИЕ: интеграция browser_mod (ставится через HACS):
+#   1. HACS → поиск «browser_mod» → Скачать.
+#   2. Перезапустить Home Assistant, обновить страницу (Ctrl+F5).
+#   3. На КАЖДОМ устройстве, где нужно всплывающее окно (компьютер, телефон
+#      в приложении HA): Настройки → Устройства и службы → Browser Mod →
+#      Настроить → задать имя браузера (например «ноутбук», «телефон»).
+#
+# Вставка: Настройки → Автоматизации и сценарии → Создать автоматизацию →
+# три точки (⋮) → «Изменить в YAML» → вставить всё, что ниже → Сохранить.
+
+alias: Шлагбаумы — видео при открытии
+description: >-
+  При вызове amvideo.open_barrier или egds.open_barrier открывает
+  всплывающее окно browser_mod с живой камерой соответствующего шлагбаума.
+mode: parallel
+max_exceeded: silent
+triggers:
+  - trigger: event
+    event_type: call_service
+    event_data:
+      domain: amvideo
+      service: open_barrier
+    id: govorovo
+  - trigger: event
+    event_type: call_service
+    event_data:
+      domain: egds
+      service: open_barrier
+    id: lesnaia
+actions:
+  - choose:
+      # ---------- А.М.Видео: Говорово ----------
+      - conditions:
+          - condition: trigger
+            id: govorovo
+        sequence:
+          - action: browser_mod.popup
+            data:
+              title: Контроль проезда — Говорово
+              size: wide
+              dismissable: true
+              timeout: 90000
+              timeout_action: dismiss
+              content:
+                type: vertical-stack
+                cards:
+                  - type: camera
+                    entity: camera.1_shlagbaum_derevnia_govorovo_15072_kamera
+                    camera_view: live
+              right_button: Открыть повторно
+              right_button_action:
+                action: perform-action
+                perform_action: amvideo.open_barrier
+                target:
+                  entity_id: button.1_shlagbaum_derevnia_govorovo_15072_otkryt
+
+      # ---------- ЕГДС: Ул. Лесная №1 ----------
+      - conditions:
+          - condition: trigger
+            id: lesnaia
+        sequence:
+          - action: browser_mod.popup
+            data:
+              title: Контроль проезда — Ул. Лесная №1
+              size: wide
+              dismissable: true
+              timeout: 90000
+              timeout_action: dismiss
+              content:
+                type: vertical-stack
+                cards:
+                  - type: camera
+                    entity: camera.ul_lesnaia_shlagbaum_no1_ul_lesnaia_kamera_no1
+                    camera_view: live
+              right_button: Открыть повторно
+              right_button_action:
+                action: perform-action
+                perform_action: egds.open_barrier
+                target:
+                  entity_id: button.ul_lesnaia_shlagbaum_no1_otkryt

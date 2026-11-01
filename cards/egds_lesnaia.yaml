@@ -1,0 +1,60 @@
+# Карточка «Живое видео + кнопка открытия» — шлагбаум ЕГДС
+# «Ул. Лесная · Шлагбаум №1» (Камера №1)
+#
+# Вставка: Панель → Изменить → Добавить карточку → Вручную → вставить → Сохранить.
+# Дополнительные компоненты не требуются.
+#
+# camera — подтверждён по вашим данным; button/cover сверьте:
+# Инструменты разработчика → Состояния → фильтр «otkryt».
+# Камера ЕГДС собирает «живую» картинку из снимков (~1 кадр/с).
+
+type: picture-elements
+camera_view: live
+camera_image: camera.ul_lesnaia_shlagbaum_no1_ul_lesnaia_kamera_no1
+title: Шлагбаум — Ул. Лесная №1
+elements:
+  # Кнопка «Открыть шлагбаум» (поверх видео, справа внизу)
+  - type: state-icon
+    entity: button.ul_lesnaia_shlagbaum_no1_otkryt
+    icon: mdi:boom-gate-arrow-up-outline
+    style:
+      top: 84%
+      left: 86%
+      color: white
+      background: rgba(0, 0, 0, 0.45)
+      border-radius: 50%
+      padding: 12px
+      transform: translate(-50%, -50%)
+    tap_action:
+      action: perform-action
+      perform_action: egds.open_barrier
+      target:
+        entity_id: button.ul_lesnaia_shlagbaum_no1_otkryt
+      confirmation:
+        text: Открыть шлагбаум?
+
+  # Кнопка «во весь экран» — диалог с живым видео (слева внизу)
+  - type: icon
+    icon: mdi:arrow-expand-all
+    style:
+      top: 84%
+      left: 14%
+      color: white
+      background: rgba(0, 0, 0, 0.45)
+      border-radius: 50%
+      padding: 10px
+      transform: translate(-50%, -50%)
+    tap_action:
+      action: more-info
+      entity: camera.ul_lesnaia_shlagbaum_no1_ul_lesnaia_kamera_no1
+
+  # Подпись: состояние шлагбаума (Закрыто / Открывается / Открыто)
+  - type: state-label
+    entity: cover.ul_lesnaia_shlagbaum_no1_shlagbaum
+    style:
+      top: 93%
+      left: 50%
+      color: white
+      text-shadow: 0 0 4px black
+      font-size: 95%
+      transform: translate(-50%, -50%)
